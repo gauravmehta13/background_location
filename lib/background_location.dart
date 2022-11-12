@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io' show Platform;
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 /// BackgroundLocation plugin to get background
@@ -9,8 +8,7 @@ import 'package:flutter/services.dart';
 class BackgroundLocation {
   // The channel to be used for communication.
   // This channel is also refrenced inside both iOS and Abdroid classes
-  static const MethodChannel _channel =
-      MethodChannel('com.almoullim.background_location/methods');
+  static const MethodChannel _channel = MethodChannel('com.almoullim.background_location/methods');
 
   /// Stop receiving location updates
   static stopLocationService() async {
@@ -23,11 +21,10 @@ class BackgroundLocation {
         <String, dynamic>{'distance_filter': distanceFilter, 'force_location_manager': forceAndroidLocationManager});
   }
 
-  static setAndroidNotification(
-      {String? title, String? message, String? icon}) async {
+  static setAndroidNotification({String? title, String? message, String? icon}) async {
     if (Platform.isAndroid) {
-      return await _channel.invokeMethod('set_android_notification',
-          <String, dynamic>{'title': title, 'message': message, 'icon': icon});
+      return await _channel.invokeMethod(
+          'set_android_notification', <String, dynamic>{'title': title, 'message': message, 'icon': icon});
     } else {
       //return Promise.resolve();
     }
@@ -47,22 +44,19 @@ class BackgroundLocation {
   Future<Location> getCurrentLocation() async {
     var completer = Completer<Location>();
 
-    var _location = Location();
     await getLocationUpdates((location) {
-      _location.latitude = location.latitude;
-      _location.longitude = location.longitude;
-      _location.accuracy = location.accuracy;
-      _location.altitude = location.altitude;
-      _location.bearing = location.bearing;
-      _location.speed = location.speed;
-      _location.time = location.time;
-      completer.complete(_location);
+      location.latitude = location.latitude;
+      location.longitude = location.longitude;
+      location.accuracy = location.accuracy;
+      location.altitude = location.altitude;
+      location.bearing = location.bearing;
+      location.speed = location.speed;
+      location.time = location.time;
+      completer.complete(location);
     });
 
     return completer.future;
   }
-
-
 
   /// Register a function to recive location updates as long as the location
   /// service has started
@@ -100,14 +94,14 @@ class Location {
   bool? isMock;
 
   Location(
-      {@required this.longitude,
-      @required this.latitude,
-      @required this.altitude,
-      @required this.accuracy,
-      @required this.bearing,
-      @required this.speed,
-      @required this.time,
-      @required this.isMock});
+      {required this.longitude,
+      required this.latitude,
+      required this.altitude,
+      required this.accuracy,
+      required this.bearing,
+      required this.speed,
+      required this.time,
+      required this.isMock});
 
   toMap() {
     var obj = {
